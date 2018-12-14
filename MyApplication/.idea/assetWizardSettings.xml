@@ -33,7 +33,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_dialog_email" />
+                                      <entry key="outputName" value="ic_menu_add" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="000101" />
                                     </map>
