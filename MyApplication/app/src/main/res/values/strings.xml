@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Event Planner</string>
+    <string name="navigation_drawer_open">Menu</string>
+    <string name="navigation_drawer_close"></string>
+    <string name="nav_header_title">Event Planner</string>
+    <string name="nav_header_subtitle"></string>
+    <string name="nav_header_desc">Menu</string>
+    <string name="action_settings">soon</string>
+    <string name="title_activity_todo_list">To do list</string>
+</resources>
