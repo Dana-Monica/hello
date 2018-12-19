@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.Layout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Todo_list extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -20,6 +28,9 @@ public class Todo_list extends AppCompatActivity
     Toolbar toolbar = null;
     NavigationView navigationView;
     DrawerLayout drawer;
+    private DatabaseReference databaseReference;
+    private EditText title,content;
+    private View hide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +38,14 @@ public class Todo_list extends AppCompatActivity
         setContentView(R.layout.activity_todo_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+        title = (EditText) findViewById(R.id.title);
+        content = (EditText) findViewById(R.id.content);
+        hide = (View) findViewById(R.id.content_home);
+        hide.setVisibility(View.GONE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +64,24 @@ public class Todo_list extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        createNewDBListener();
+    }
+
+    private void createNewDBListener() {
+        databaseReference.child("id1").child("todolists").child("list1").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // dataSnaphot = json with key 'todolists'
+                List list= dataSnapshot.getValue(List.class);
+
+                content.setText(list.getContent());
+                title.setText(list.getTitle());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override

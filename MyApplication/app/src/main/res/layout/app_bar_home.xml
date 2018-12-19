@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
+    <!--meniul de sus cu buton si titlu-->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +20,13 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+
+    <!-- trebe inflate aici content_pagina ...-->
+    <include layout="@layout/content_home"
+        android:id="@+id/content_home"/>
+
+    <include layout="@layout/content_todo_list"
+        android:id="@+id/content_todolist"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
