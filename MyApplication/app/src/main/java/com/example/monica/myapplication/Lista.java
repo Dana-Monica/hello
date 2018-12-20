@@ -1,17 +1,15 @@
 package com.example.monica.myapplication;
 
-public class List {
+public class Lista {
     private String title;
     private String content;
+    private String type;
 
-    public List(){
+
+    public Lista(){
 
     }
 
-    public List(String title, String content){
-        this.title = title;
-        this.content = content;
-    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -21,6 +19,8 @@ public class List {
         this.content = content;
     }
 
+    public void setType(String type) { this.type = type; }
+
     public String getTitle(){
         return title;
     }
@@ -28,5 +28,7 @@ public class List {
     public String getContent(){
         return content;
     }
+
+    public String getType() { return type; }
 
 }

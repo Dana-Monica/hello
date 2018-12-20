@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.text.Layout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,20 +13,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Todo_list extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +38,7 @@ public class Todo_list extends AppCompatActivity
     private View hide,show;
     private ListView listview;
     private CustomAdapter customAdapter;
+    private List<Lista> elements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +50,18 @@ public class Todo_list extends AppCompatActivity
         databaseReference = FirebaseDatabase.getInstance().getReference();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
+        createNewDBListener();
+
         title = (EditText) findViewById(R.id.title);
         content = (EditText) findViewById(R.id.content);
         hide = (View) findViewById(R.id.content_home);
         show = (View) findViewById(R.id.content_todolist);
         hide.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
+
         listview = (ListView) findViewById(R.id.listview);
-        customAdapter = new CustomAdapter();
-        String[] lista = {"ASsa","DSd aDS"};
-        ListAdapter try1 = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,lista);
-        listview.setAdapter(try1);
+        customAdapter = new CustomAdapter(this, R.layout.todolist_item, elements);
+        listview.setAdapter(customAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -80,45 +80,16 @@ public class Todo_list extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //createNewDBListener();
     }
 
-    class CustomAdapter extends BaseAdapter{
-
-        public int getCount(){
-            return 1;
-        }
-
-        public Object getItem(int i){
-            return null;
-        }
-
-        public long getItemId(int i){
-            return 0;
-        }
-
-        public View getView(int i, View view, ViewGroup viewGroup){
-            view = getLayoutInflater().inflate(R.layout.todolist_item,null);
-
-            TextView item_list_title = (TextView) findViewById(R.id.item_list_title);
-            TextView item_list_content = (TextView) findViewById(R.id.item_list_content);
-
-            item_list_title.setText("merge?");
-            item_list_content.setText("sper");
-
-            return view;
-        }
-    }
     private void createNewDBListener() {
         databaseReference.child("id1").child("todolists").child("list1").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // dataSnaphot = json with key 'todolists'
-                List list= dataSnapshot.getValue(List.class);
+                Lista list= dataSnapshot.getValue(Lista.class);
 
-                content.setText(list.getContent());
-                title.setText(list.getTitle());
+                elements.add(list);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
