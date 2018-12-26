@@ -1,5 +1,6 @@
 package com.example.monica.myapplication;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,28 +14,38 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
-public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class UpdateListItem extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
-    DrawerLayout drawer;
-    NavigationView navigationView;
-    Toolbar toolbar = null;
     private View hide1,hide2,show;
+    private Toolbar toolbar = null;
+    private NavigationView navigationView;
+    private DrawerLayout drawer;
+    private Intent intent;
+    private EditText title,content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_update_list_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        hide1 = (View) findViewById(R.id.content_todolist);
-        hide2 = (View) findViewById(R.id.content_updatelistitem);
-        show = (View) findViewById(R.id.content_home);
+        hide1 = (View) findViewById(R.id.content_home);
+        hide2 = (View) findViewById(R.id.content_todolist);
+        show = (View) findViewById(R.id.content_updatelistitem);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
+        title = (EditText) findViewById(R.id.title);
+        content = (EditText) findViewById(R.id.content);
+
+        intent = getIntent();
+        title.setText(intent.getStringExtra("title"));
+        content.setText(intent.getStringExtra("content"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +90,6 @@ public class Home extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -91,11 +100,11 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent i1 = new Intent(Home.this,Home.class);
-            startActivity(i1);
+            Intent i5 = new Intent(UpdateListItem.this,Home.class);
+            startActivity(i5);
         } else if (id == R.id.nav_todo_list) {
-            Intent i2 = new Intent(Home.this,Todo_list.class);
-            startActivity(i2);
+            Intent i6 = new Intent(UpdateListItem.this,Todo_list.class);
+            startActivity(i6);
         } else if (id == R.id.nav_sign_out) {
 
         }

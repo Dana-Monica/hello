@@ -27,6 +27,8 @@
     <!-- trebe inflate aici content_pagina ...-->
     <include layout="@layout/content_home"
         android:id="@+id/content_home"/>
+    <include layout="@layout/content_updatelistitem"
+        android:id="@+id/content_updatelistitem"/>
 
 
     <android.support.design.widget.FloatingActionButton
