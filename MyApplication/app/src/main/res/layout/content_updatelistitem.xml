@@ -14,6 +14,8 @@
     <EditText
         android:id="@+id/title"
         android:layout_width="match_parent"
+        android:layout_gravity="top"
+        android:gravity="top"
         android:layout_height="wrap_content" />
     <EditText
         android:id="@+id/content"
@@ -22,19 +24,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
         android:orientation="horizontal">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/updateItem"
             android:text="@string/updatelistitem"
+            android:onClick="clicked"
             android:layout_marginRight="15dp"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/remove"
+            android:text="@string/remove"
+            android:layout_marginRight="15dp"
+            android:onClick="clicked"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/cancel"
+            android:onClick="clicked"
             android:text="@string/cancel"/>
+
+
     </LinearLayout>
 </LinearLayout>
 

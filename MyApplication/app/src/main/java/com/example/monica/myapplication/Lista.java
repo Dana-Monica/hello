@@ -4,12 +4,11 @@ public class Lista {
     private String title;
     private String content;
     private String type;
-
+    private String name;
 
     public Lista(){
 
     }
-
 
     public void setTitle(String title) {
         this.title = title;
@@ -21,6 +20,8 @@ public class Lista {
 
     public void setType(String type) { this.type = type; }
 
+    public void setName(String name) { this.name = name; }
+
     public String getTitle(){
         return title;
     }
@@ -30,5 +31,7 @@ public class Lista {
     }
 
     public String getType() { return type; }
+
+    public String getName() { return name; }
 
 }

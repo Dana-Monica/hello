@@ -29,6 +29,8 @@
         android:id="@+id/content_home"/>
     <include layout="@layout/content_updatelistitem"
         android:id="@+id/content_updatelistitem"/>
+    <include layout="@layout/content_addnewchild"
+        android:id="@+id/content_addnewchild"/>
 
 
     <android.support.design.widget.FloatingActionButton

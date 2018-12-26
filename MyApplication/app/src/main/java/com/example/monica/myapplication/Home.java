@@ -20,7 +20,7 @@ public class Home extends AppCompatActivity
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar = null;
-    private View hide1,hide2,show;
+    private View hide1,hide2,hide3,show;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +31,11 @@ public class Home extends AppCompatActivity
 
         hide1 = (View) findViewById(R.id.content_todolist);
         hide2 = (View) findViewById(R.id.content_updatelistitem);
+        hide3 = (View) findViewById(R.id.content_addnewchild);
         show = (View) findViewById(R.id.content_home);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
+        hide3.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

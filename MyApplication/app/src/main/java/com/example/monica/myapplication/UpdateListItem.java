@@ -3,8 +3,10 @@ package com.example.monica.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,17 +17,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class UpdateListItem extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-    private View hide1,hide2,show;
+    private View hide1,hide2,hide3,show;
     private Toolbar toolbar = null;
+    private DatabaseReference databaseReference;
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private Intent intent;
     private EditText title,content;
+    private int position;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,25 +42,25 @@ public class UpdateListItem extends AppCompatActivity
 
         hide1 = (View) findViewById(R.id.content_home);
         hide2 = (View) findViewById(R.id.content_todolist);
+        hide3 = (View) findViewById(R.id.content_addnewchild);
         show = (View) findViewById(R.id.content_updatelistitem);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
+        hide3.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
         title = (EditText) findViewById(R.id.title);
         content = (EditText) findViewById(R.id.content);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         intent = getIntent();
         title.setText(intent.getStringExtra("title"));
         content.setText(intent.getStringExtra("content"));
+        position = intent.getIntExtra("position",0);
+        name = intent.getStringExtra("name");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.hide();
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -64,6 +70,23 @@ public class UpdateListItem extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void clicked(View view) {
+        switch (view.getId()) {
+            case R.id.cancel:
+                onBackPressed();
+                break;
+            case R.id.updateItem:
+                databaseReference.child("id1").child("todolists").child(name).child("title").setValue(title.getText().toString());
+                databaseReference.child("id1").child("todolists").child(name).child("content").setValue(content.getText().toString());
+                onBackPressed();
+                break;
+            case R.id.remove:
+                databaseReference.child("id1").child("todolists").child(name).removeValue();
+                onBackPressed();
+                break;
+        }
     }
 
     @Override

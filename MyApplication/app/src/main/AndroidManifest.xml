@@ -20,14 +20,17 @@
             </intent-filter>
         </activity>
         <activity
-        android:name=".Todo_list"
-        android:label="@string/title_activity_todo_list"
-        android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".Todo_list"
+            android:label="@string/title_activity_todo_list"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UpdateListItem"
             android:label="@string/title_activity_updatelistitem"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity
+            android:name=".AddNewChild"
+            android:label="@string/title_activity_addnewchild"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

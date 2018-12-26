@@ -3,7 +3,6 @@ package com.example.monica.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,14 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,8 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
-
 public class Todo_list extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
 
@@ -40,8 +34,9 @@ public class Todo_list extends AppCompatActivity
     DrawerLayout drawer;
     private DatabaseReference databaseReference;
     private EditText title,content;
-    private View hide1,hide2,show;
+    private View hide1,hide2,hide3,show;
     private ListView listview;
+    private int numberOfItems = 0;
     private CustomAdapter customAdapter;
     private List<Lista> elements = new ArrayList<>();
 
@@ -53,17 +48,17 @@ public class Todo_list extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference();
         createNewDBListener();
 
         title = (EditText) findViewById(R.id.title);
         content = (EditText) findViewById(R.id.content);
         hide1 = (View) findViewById(R.id.content_home);
         hide2 = (View) findViewById(R.id.content_updatelistitem);
+        hide3 = (View) findViewById(R.id.content_addnewchild);
         show = (View) findViewById(R.id.content_todolist);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
+        hide3.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
 
         listview = (ListView) findViewById(R.id.listview);
@@ -75,8 +70,9 @@ public class Todo_list extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent addNewChild = new Intent(Todo_list.this,AddNewChild.class);
+                addNewChild.putExtra("numberOfElements",numberOfItems);
+                startActivity(addNewChild);
             }
         });
 
@@ -90,52 +86,33 @@ public class Todo_list extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void createNewDBChildListener() {
-        databaseReference.child("id1").child("todolists").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        /* Retrieve lists of items or listen for additions to a list of items.
-        This callback is triggered once for each existing child and then again every time
-        a new child is added to the specified path. The DataSnapshot passed to the listener
-        contains the new child's data. */
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        /* Listen for changes to the items in a list. This event fired any time a child
-        node is modified, including any modifications to descendants of the child node.
-        The DataSnapshot passed to the event listener contains the updated data for the child.
-        */
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-        /* Listen for items being removed from a list. The DataSnapshot passed to the event
-         callback contains the data for the removed child. */
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-        /* Listen for changes to the order of items in an ordered list. This event is
-        triggered whenever the onChildChanged() callback is triggered by an update that
-        causes reordering of the child. It is used with data that is ordered with
-        orderByChild or orderByValue. */
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
-
     @Override
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
         Intent updateListItem = new Intent(Todo_list.this,UpdateListItem.class);
         updateListItem.putExtra("position",position);
         Lista element = elements.get(position);
+        updateListItem.putExtra("name",element.getName());
         updateListItem.putExtra("title",element.getTitle());
         updateListItem.putExtra("content",element.getContent());
         startActivity(updateListItem);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        createNewDBListener();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        createNewDBListener();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        createNewDBListener();
     }
 
     private void createNewDBListener() {
@@ -143,11 +120,14 @@ public class Todo_list extends AppCompatActivity
         databaseReference.child("id1").child("todolists").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                elements.clear();
                 for (DataSnapshot entrySnaphot : dataSnapshot.getChildren()) {
                     Lista list= entrySnaphot.getValue(Lista.class);
+                    list.setName(entrySnaphot.getKey());
                     elements.add(list);
+                    customAdapter.notifyDataSetChanged();
                 }
+                numberOfItems = elements.size();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

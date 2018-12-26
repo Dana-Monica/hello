@@ -6,7 +6,10 @@
     <string name="nav_header_subtitle"></string>
     <string name="nav_header_desc">Menu</string>
     <string name="cancel">Cancel</string>
+    <string name="remove">Remove</string>
     <string name="updatelistitem">Update</string>
     <string name="title_activity_todo_list">To do list</string>
+    <string name="saveitemlist">Save</string>
+    <string name="title_activity_addnewchild">Add</string>
     <string name="title_activity_updatelistitem">Update item</string>
 </resources>
