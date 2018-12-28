@@ -13,14 +13,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
 
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar = null;
     private View hide1,hide2,hide3,show;
+    private ListView listview;
+    private CustomAdaptorEvent customAdapter;
+    private List<EventElement> elementsEvent = new ArrayList<>();
+    private DatabaseReference databaseReference;
+    private int numberOfItems = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +57,15 @@ public class Home extends AppCompatActivity
         hide2.setVisibility(View.GONE);
         hide3.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
+
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        createDBListener();
+
+        listview = (ListView) findViewById(R.id.listviewevent);
+        customAdapter = new CustomAdaptorEvent(this, R.layout.event_item, elementsEvent);
+        listview.setAdapter(customAdapter);
+        listview.setOnItemClickListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +84,59 @@ public class Home extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        createDBListener();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        createDBListener();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        createDBListener();
+    }
+
+    public void createDBListener() {
+
+        databaseReference.child("id1").child("events").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                elementsEvent.clear();
+                for (DataSnapshot entrySnaphot : dataSnapshot.getChildren()) {
+                    EventElement event = new EventElement();
+                    event.setDate("Date: " + (String) entrySnaphot.child("date").getValue());
+                    event.setLocation("Location: " + (String) entrySnaphot.child("location").getValue());
+                    event.setTitle((String) entrySnaphot.child("title").getValue());
+                    event.setName(entrySnaphot.getKey());
+
+                    Map<String, String> budgetItem = (Map<String, String>) entrySnaphot.child("budget").getValue();
+                    Map<String, String> guestItem = (Map<String, String>) entrySnaphot.child("guests").getValue();
+                    event.setBudget(budgetItem);
+                    event.setGuests(guestItem);
+
+                    elementsEvent.add(event);
+                    customAdapter.notifyDataSetChanged();
+                }
+                numberOfItems = elementsEvent.size();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
+    }
+
+    @Override
+    public void onItemClick(AdapterView adapterView, View view, int position, long id) {
+        Toast.makeText(this, "please work", Toast.LENGTH_SHORT).show();
     }
 
     @Override
