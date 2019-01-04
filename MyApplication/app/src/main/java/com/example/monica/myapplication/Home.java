@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,8 +36,8 @@ public class Home extends AppCompatActivity
     DrawerLayout drawer;
     NavigationView navigationView;
     Toolbar toolbar = null;
-    private View hide1,hide2,hide3,show;
-    private ListView listview;
+    private View hide1,hide2,hide3,hide4,show;
+    private ListView listviewevent;
     private CustomAdaptorEvent customAdapter;
     private List<EventElement> elementsEvent = new ArrayList<>();
     private DatabaseReference databaseReference;
@@ -49,23 +50,24 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        createDBListener();
+
         hide1 = (View) findViewById(R.id.content_todolist);
         hide2 = (View) findViewById(R.id.content_updatelistitem);
         hide3 = (View) findViewById(R.id.content_addnewchild);
+        hide4 = (View) findViewById(R.id.content_updateeventitem);
         show = (View) findViewById(R.id.content_home);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
         hide3.setVisibility(View.GONE);
+        hide4.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
 
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        createDBListener();
-
-        listview = (ListView) findViewById(R.id.listviewevent);
+        listviewevent = (ListView) findViewById(R.id.listviewevent);
         customAdapter = new CustomAdaptorEvent(this, R.layout.event_item, elementsEvent);
-        listview.setAdapter(customAdapter);
-        listview.setOnItemClickListener(this);
+        listviewevent.setAdapter(customAdapter);
+        listviewevent.setOnItemClickListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -112,8 +114,8 @@ public class Home extends AppCompatActivity
                 elementsEvent.clear();
                 for (DataSnapshot entrySnaphot : dataSnapshot.getChildren()) {
                     EventElement event = new EventElement();
-                    event.setDate("Date: " + (String) entrySnaphot.child("date").getValue());
-                    event.setLocation("Location: " + (String) entrySnaphot.child("location").getValue());
+                    event.setDate((String) entrySnaphot.child("date").getValue());
+                    event.setLocation((String) entrySnaphot.child("location").getValue());
                     event.setTitle((String) entrySnaphot.child("title").getValue());
                     event.setName(entrySnaphot.getKey());
 
@@ -136,7 +138,24 @@ public class Home extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-        Toast.makeText(this, "please work", Toast.LENGTH_SHORT).show();
+        Log.v("monicapasarezorro","apasat" + position);
+        Intent updateEventItem = new Intent(Home.this,UpdateEventItem.class);
+        updateEventItem.putExtra("position",position);
+        EventElement element = elementsEvent.get(position);
+        updateEventItem.putExtra("name",element.getName());
+        updateEventItem.putExtra("title",element.getTitle());
+        updateEventItem.putExtra("location",element.getLocation());
+        updateEventItem.putExtra("date",element.getDate());
+        updateEventItem.putExtra("budgetCount",element.getBudget().size());
+        int i = 0;
+        for( String key: element.getBudget().keySet())
+        {
+            String value = String.valueOf(element.getBudget().get(key));
+            updateEventItem.putExtra("budgetkey" + i, key);
+            updateEventItem.putExtra("budgetvalue" + i,value);
+            i++;
+        }
+        startActivity(updateEventItem);
     }
 
     @Override

@@ -30,7 +30,11 @@
         <activity
             android:name=".AddNewChild"
             android:label="@string/title_activity_addnewchild"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UpdateEventItem"
+            android:label="@string/title_activity_updateeventitem"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

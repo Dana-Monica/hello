@@ -11,5 +11,6 @@
     <string name="title_activity_todo_list">To do list</string>
     <string name="saveitemlist">Save</string>
     <string name="title_activity_addnewchild">Add</string>
+    <string name="title_activity_updateeventitem">Update event</string>
     <string name="title_activity_updatelistitem">Update item</string>
 </resources>

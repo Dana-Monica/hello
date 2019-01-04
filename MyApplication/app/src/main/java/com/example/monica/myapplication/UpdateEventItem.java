@@ -9,18 +9,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class AddNewChild extends AppCompatActivity
+import java.util.Map;
+
+public class UpdateEventItem extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private View hide1,hide2,hide3,hide4,show;
@@ -28,71 +28,41 @@ public class AddNewChild extends AppCompatActivity
     private DatabaseReference databaseReference;
     private NavigationView navigationView;
     private DrawerLayout drawer;
-    private String titleString, contentString;
     private Intent intent;
-    private int numberOfElements = 0;
-    private EditText title,content;
+    private EditText titleEvent,locationEvent,dateEvent;
+    private ListView budgetlistview;
+    private Map<String,String> budget;
+    private int position;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_child);
+        setContentView(R.layout.activity_update_event_item);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         hide1 = (View) findViewById(R.id.content_home);
         hide2 = (View) findViewById(R.id.content_todolist);
-        hide3 = (View) findViewById(R.id.content_updatelistitem);
-        hide4 = (View) findViewById(R.id.content_updateeventitem);
-        show = (View) findViewById(R.id.content_addnewchild);
+        hide3 = (View) findViewById(R.id.content_addnewchild);
+        hide4 = (View) findViewById(R.id.content_updatelistitem);
+        show = (View) findViewById(R.id.content_updateeventitem);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
         hide3.setVisibility(View.GONE);
         hide4.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
+        titleEvent = (EditText) findViewById(R.id.eventtitle);
+        dateEvent = (EditText) findViewById(R.id.eventdate);//get budget listview and make adaptor with obj budget
+        locationEvent = (EditText) findViewById(R.id.eventlocation);
 
-        title = (EditText) findViewById(R.id.titleAdd);
-        title.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                titleString = title.getText().toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-
-        });
-        content = (EditText) findViewById(R.id.contentAdd);
-        content.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                contentString = s.toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                contentString = s.toString();
-            }
-
-        });
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         intent = getIntent();
-        numberOfElements = intent.getIntExtra("numberOfElements", 0);
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        titleEvent.setText(intent.getStringExtra("title"));
+        locationEvent.setText(intent.getStringExtra("location"));
+        dateEvent.setText(intent.getStringExtra("date"));
+        name = intent.getStringExtra("name");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.hide();
@@ -106,6 +76,22 @@ public class AddNewChild extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+//todo : implement these
+    public void clicked2(View view) {
+        switch (view.getId()) {
+            case R.id.cancel:
+                onBackPressed();
+                break;
+            case R.id.updateItem:
+                onBackPressed();
+                break;
+            case R.id.remove:
+                onBackPressed();
+                break;
+        }
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -133,24 +119,6 @@ public class AddNewChild extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void clicked (View view) {
-        switch (view.getId()) {
-            case R.id.cancel:
-                onBackPressed();
-                break;
-            case R.id.saveItem:
-                int pos = numberOfElements + 1;
-                String name = "list" + pos;
-                Lista element = new Lista();
-                element.setName(name);
-                element.setContent(contentString);
-                element.setTitle(titleString);
-                databaseReference.child("id1").child("todolists").child(name).setValue(element);
-                onBackPressed();
-                break;
-        }
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -158,10 +126,10 @@ public class AddNewChild extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent i5 = new Intent(AddNewChild.this,Home.class);
+            Intent i5 = new Intent(UpdateEventItem.this,Home.class);
             startActivity(i5);
         } else if (id == R.id.nav_todo_list) {
-            Intent i6 = new Intent(AddNewChild.this,Todo_list.class);
+            Intent i6 = new Intent(UpdateEventItem.this,Todo_list.class);
             startActivity(i6);
         } else if (id == R.id.nav_sign_out) {
 
@@ -172,5 +140,4 @@ public class AddNewChild extends AppCompatActivity
         return true;
     }
 }
-
 

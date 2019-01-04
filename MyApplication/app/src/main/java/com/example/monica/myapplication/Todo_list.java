@@ -34,7 +34,7 @@ public class Todo_list extends AppCompatActivity
     DrawerLayout drawer;
     private DatabaseReference databaseReference;
     private EditText title,content;
-    private View hide1,hide2,hide3,show;
+    private View hide1,hide2,hide3,hide4,show;
     private ListView listview;
     private int numberOfItems = 0;
     private CustomAdapter customAdapter;
@@ -55,10 +55,12 @@ public class Todo_list extends AppCompatActivity
         hide1 = (View) findViewById(R.id.content_home);
         hide2 = (View) findViewById(R.id.content_updatelistitem);
         hide3 = (View) findViewById(R.id.content_addnewchild);
+        hide4 = (View) findViewById(R.id.content_updateeventitem);
         show = (View) findViewById(R.id.content_todolist);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
         hide3.setVisibility(View.GONE);
+        hide4.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
 
         listview = (ListView) findViewById(R.id.listview);
@@ -124,6 +126,7 @@ public class Todo_list extends AppCompatActivity
                 for (DataSnapshot entrySnaphot : dataSnapshot.getChildren()) {
                     Lista list= entrySnaphot.getValue(Lista.class);
                     list.setName(entrySnaphot.getKey());
+
                     elements.add(list);
                     customAdapter.notifyDataSetChanged();
                 }

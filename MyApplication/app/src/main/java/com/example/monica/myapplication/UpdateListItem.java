@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class UpdateListItem extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-    private View hide1,hide2,hide3,show;
+    private View hide1,hide2,hide3,hide4,show;
     private Toolbar toolbar = null;
     private DatabaseReference databaseReference;
     private NavigationView navigationView;
@@ -43,10 +43,12 @@ public class UpdateListItem extends AppCompatActivity
         hide1 = (View) findViewById(R.id.content_home);
         hide2 = (View) findViewById(R.id.content_todolist);
         hide3 = (View) findViewById(R.id.content_addnewchild);
+        hide4 = (View) findViewById(R.id.content_updateeventitem);
         show = (View) findViewById(R.id.content_updatelistitem);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
         hide3.setVisibility(View.GONE);
+        hide4.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
         title = (EditText) findViewById(R.id.title);
         content = (EditText) findViewById(R.id.content);

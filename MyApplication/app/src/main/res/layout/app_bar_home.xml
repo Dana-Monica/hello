@@ -24,13 +24,14 @@
 
     <include layout="@layout/content_todo_list"
         android:id="@+id/content_todolist"/>
-    <!-- trebe inflate aici content_pagina ...-->
     <include layout="@layout/content_home"
         android:id="@+id/content_home"/>
     <include layout="@layout/content_updatelistitem"
         android:id="@+id/content_updatelistitem"/>
     <include layout="@layout/content_addnewchild"
         android:id="@+id/content_addnewchild"/>
+    <include layout="@layout/content_updateeventitem"
+        android:id="@+id/content_updateeventitem"/>
 
 
     <android.support.design.widget.FloatingActionButton

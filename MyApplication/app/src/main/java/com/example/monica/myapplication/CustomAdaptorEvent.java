@@ -71,6 +71,12 @@ public class CustomAdaptorEvent extends ArrayAdapter<EventElement> {
         return view;
     }
 
+    @Override
+    public boolean isEnabled(int position)
+    {
+        return true;
+    }
+
     private static class ItemHolder2 {
         TextView title;
         TextView location;
