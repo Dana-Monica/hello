@@ -35,6 +35,10 @@
             android:name=".UpdateEventItem"
             android:label="@string/title_activity_updateeventitem"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddNewEvent"
+            android:label="@string/title_activity_addnewevent"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

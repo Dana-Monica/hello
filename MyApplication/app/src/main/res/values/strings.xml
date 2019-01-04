@@ -13,4 +13,5 @@
     <string name="title_activity_addnewchild">Add</string>
     <string name="title_activity_updateeventitem">Update event</string>
     <string name="title_activity_updatelistitem">Update item</string>
+    <string name="title_activity_addnewevent">Add event</string>
 </resources>

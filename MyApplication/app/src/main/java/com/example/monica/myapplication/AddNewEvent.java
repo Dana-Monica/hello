@@ -15,28 +15,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class AddNewChild extends AppCompatActivity
+import java.util.HashMap;
+import java.util.Map;
+
+public class AddNewEvent extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-    private View hide1,hide2,hide3,hide4,hide5, show;
+    private View hide1,hide2,hide3,hide4,hide5,show;
     private Toolbar toolbar = null;
     private DatabaseReference databaseReference;
     private NavigationView navigationView;
     private DrawerLayout drawer;
-    private String titleString, contentString;
+    private String titleString, locationString, dateString, budgetString;
     private Intent intent;
     private int numberOfElements = 0;
-    private EditText title,content;
+    private EditText titleEventAdd, locationEventAdd, dateEventAdd, budgetEventAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_child);
+        setContentView(R.layout.activity_add_new_event);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -44,8 +47,8 @@ public class AddNewChild extends AppCompatActivity
         hide2 = (View) findViewById(R.id.content_todolist);
         hide3 = (View) findViewById(R.id.content_updatelistitem);
         hide4 = (View) findViewById(R.id.content_updateeventitem);
-        hide5 = (View) findViewById(R.id.content_addnewevent);
-        show = (View) findViewById(R.id.content_addnewchild);
+        hide5 = (View) findViewById(R.id.content_addnewchild);
+        show = (View) findViewById(R.id.content_addnewevent);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
         hide3.setVisibility(View.GONE);
@@ -53,8 +56,8 @@ public class AddNewChild extends AppCompatActivity
         hide5.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
 
-        title = (EditText) findViewById(R.id.titleAdd);
-        title.addTextChangedListener(new TextWatcher() {
+        titleEventAdd = (EditText) findViewById(R.id.titleEventAdd);
+        titleEventAdd.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -63,7 +66,7 @@ public class AddNewChild extends AppCompatActivity
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                titleString = title.getText().toString();
+                titleString = titleEventAdd.getText().toString();
             }
 
             @Override
@@ -72,8 +75,8 @@ public class AddNewChild extends AppCompatActivity
             }
 
         });
-        content = (EditText) findViewById(R.id.contentAdd);
-        content.addTextChangedListener(new TextWatcher() {
+        locationEventAdd = (EditText) findViewById(R.id.locationEventAdd);
+        locationEventAdd.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -82,12 +85,52 @@ public class AddNewChild extends AppCompatActivity
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                contentString = s.toString();
+                locationString = s.toString();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                contentString = s.toString();
+                locationString = s.toString();
+            }
+
+        });
+
+        dateEventAdd = (EditText) findViewById(R.id.dateEventAdd);
+        dateEventAdd.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                dateString = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                dateString = s.toString();
+            }
+
+        });
+
+        budgetEventAdd = (EditText) findViewById(R.id.budgetEventAdd);
+        budgetEventAdd.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                budgetString = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                budgetString = s.toString();
             }
 
         });
@@ -108,6 +151,7 @@ public class AddNewChild extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -135,19 +179,25 @@ public class AddNewChild extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void clicked (View view) {
+    public void clicked3 (View view) {
         switch (view.getId()) {
-            case R.id.cancel:
+            case R.id.cancelEventAdd:
                 onBackPressed();
                 break;
-            case R.id.saveItem:
+            case R.id.saveEventAdd:
                 int pos = numberOfElements + 1;
-                String name = "list" + pos;
-                Lista element = new Lista();
-                element.setName(name);
-                element.setContent(contentString);
-                element.setTitle(titleString);
-                databaseReference.child("id1").child("todolists").child(name).setValue(element);
+                String name = "event" + pos;
+                EventElement elemen = new EventElement();
+                elemen.setName(name);
+                elemen.setTitle(titleString);
+                elemen.setLocation(locationString);
+                elemen.setDate(dateString);
+                Map<String,String > mapB = new HashMap<>();
+                mapB.put("cheltuieli",budgetString);
+                elemen.setBudget(mapB);
+                elemen.setGuests(null);
+                // mai am de adaugat guests si de vazut de ce nu merge sa adauge in BD bugetul
+                databaseReference.child("id1").child("events").child(name).setValue(elemen);
                 onBackPressed();
                 break;
         }
@@ -160,10 +210,10 @@ public class AddNewChild extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent i5 = new Intent(AddNewChild.this,Home.class);
+            Intent i5 = new Intent(AddNewEvent.this,Home.class);
             startActivity(i5);
         } else if (id == R.id.nav_todo_list) {
-            Intent i6 = new Intent(AddNewChild.this,Todo_list.class);
+            Intent i6 = new Intent(AddNewEvent.this,Todo_list.class);
             startActivity(i6);
         } else if (id == R.id.nav_sign_out) {
 
@@ -174,5 +224,3 @@ public class AddNewChild extends AppCompatActivity
         return true;
     }
 }
-
-

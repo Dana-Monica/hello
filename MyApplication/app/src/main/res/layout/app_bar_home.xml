@@ -32,6 +32,8 @@
         android:id="@+id/content_addnewchild"/>
     <include layout="@layout/content_updateeventitem"
         android:id="@+id/content_updateeventitem"/>
+    <include layout="@layout/content_addnewevent"
+        android:id="@+id/content_addnewevent"/>
 
 
     <android.support.design.widget.FloatingActionButton

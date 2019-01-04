@@ -53,12 +53,12 @@ public class EventElement {
 
     public String getBudgetTotal() {
         String total = "";
-        int sum = 0;
+        int sum = 0, cost;
         for( String key: getBudget().keySet())
         {
             String value = String.valueOf(getBudget().get(key));
 
-            int cost = Integer.parseInt(value);
+            cost = Integer.parseInt(value);
 
             sum += cost;
         }

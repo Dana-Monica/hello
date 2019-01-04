@@ -24,7 +24,7 @@ import java.util.Map;
 public class UpdateEventItem extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-    private View hide1,hide2,hide3,hide4,show;
+    private View hide1,hide2,hide3,hide4,hide5,show;
     private Toolbar toolbar = null;
     private DatabaseReference databaseReference;
     private NavigationView navigationView;
@@ -48,11 +48,13 @@ public class UpdateEventItem extends AppCompatActivity
         hide2 = (View) findViewById(R.id.content_todolist);
         hide3 = (View) findViewById(R.id.content_addnewchild);
         hide4 = (View) findViewById(R.id.content_updatelistitem);
+        hide5 = (View) findViewById(R.id.content_addnewevent);
         show = (View) findViewById(R.id.content_updateeventitem);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
         hide3.setVisibility(View.GONE);
         hide4.setVisibility(View.GONE);
+        hide5.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
         titleEvent = (EditText) findViewById(R.id.eventtitle);
         dateEvent = (EditText) findViewById(R.id.eventdate);//get budget listview and make adaptor with obj budget
