@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="2dp"
-        android:clickable="true"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,6 +31,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,11 +42,12 @@
                 android:text="Location: "/>
             <EditText
                 android:id="@+id/eventlocation"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:padding="5dp"
                 android:layout_toRightOf="@+id/locationText"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,25 +58,26 @@
                 android:text="Date: "/>
             <EditText
                 android:id="@+id/eventdate"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:padding="5dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Budget: "/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Budget: "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventbudget"/>
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintVertical_weight="1"
-            android:id="@+id/budgetlistview"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

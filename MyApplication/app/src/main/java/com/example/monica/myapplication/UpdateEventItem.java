@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,10 +31,11 @@ public class UpdateEventItem extends AppCompatActivity
     private DrawerLayout drawer;
     private Intent intent;
     private EditText titleEvent,locationEvent,dateEvent;
+    private TextView budgetTotal;
     private ListView budgetlistview;
     private Map<String,String> budget;
     private int position;
-    private String name;
+    private String name, budgetTot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class UpdateEventItem extends AppCompatActivity
         titleEvent = (EditText) findViewById(R.id.eventtitle);
         dateEvent = (EditText) findViewById(R.id.eventdate);//get budget listview and make adaptor with obj budget
         locationEvent = (EditText) findViewById(R.id.eventlocation);
+        budgetTotal = (TextView) findViewById(R.id.eventbudget);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -63,6 +66,8 @@ public class UpdateEventItem extends AppCompatActivity
         locationEvent.setText(intent.getStringExtra("location"));
         dateEvent.setText(intent.getStringExtra("date"));
         name = intent.getStringExtra("name");
+        budgetTot = intent.getStringExtra("budgetTotal");
+        budgetTotal.setText(budgetTot);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.hide();
@@ -77,16 +82,19 @@ public class UpdateEventItem extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-//todo : implement these
     public void clicked2(View view) {
         switch (view.getId()) {
-            case R.id.cancel:
+            case R.id.cancelEvent:
                 onBackPressed();
                 break;
-            case R.id.updateItem:
+            case R.id.updateItemEvent:
+                databaseReference.child("id1").child("events").child(name).child("title").setValue(titleEvent.getText().toString());
+                databaseReference.child("id1").child("events").child(name).child("date").setValue(dateEvent.getText().toString());
+                databaseReference.child("id1").child("events").child(name).child("location").setValue(locationEvent.getText().toString());
                 onBackPressed();
                 break;
-            case R.id.remove:
+            case R.id.removeEvent:
+                databaseReference.child("id1").child("events").child(name).removeValue();
                 onBackPressed();
                 break;
         }

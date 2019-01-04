@@ -147,7 +147,8 @@ public class Home extends AppCompatActivity
         updateEventItem.putExtra("location",element.getLocation());
         updateEventItem.putExtra("date",element.getDate());
         updateEventItem.putExtra("budgetCount",element.getBudget().size());
-        int i = 0;
+        updateEventItem.putExtra("budgetTotal",element.getBudgetTotal());
+        /* int i = 0;
         for( String key: element.getBudget().keySet())
         {
             String value = String.valueOf(element.getBudget().get(key));
@@ -155,6 +156,9 @@ public class Home extends AppCompatActivity
             updateEventItem.putExtra("budgetvalue" + i,value);
             i++;
         }
+        */
+
+        //daca mai am timp, sa incarc bugetul, e tot un listview, nimic nou
         startActivity(updateEventItem);
     }
 
