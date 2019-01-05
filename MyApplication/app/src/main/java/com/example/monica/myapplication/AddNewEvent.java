@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -187,18 +188,23 @@ public class AddNewEvent extends AppCompatActivity
             case R.id.saveEventAdd:
                 int pos = numberOfElements + 1;
                 String name = "event" + pos;
-                EventElement elemen = new EventElement();
-                elemen.setName(name);
-                elemen.setTitle(titleString);
-                elemen.setLocation(locationString);
-                elemen.setDate(dateString);
-                Map<String,String > mapB = new HashMap<>();
-                mapB.put("cheltuieli",budgetString);
-                elemen.setBudget(mapB);
-                elemen.setGuests(null);
-                // mai am de adaugat guests si de vazut de ce nu merge sa adauge in BD bugetul
-                databaseReference.child("id1").child("events").child(name).setValue(elemen);
-                onBackPressed();
+                Map<String,Object > mapB = new HashMap<>();
+                Map<String,String > mapC = new HashMap<>();
+                mapB.put("date",dateString);
+                mapB.put("location",locationString);
+                mapB.put("title",titleString);
+                mapC.put("cheltuieli",budgetString);
+                mapB.put("budget",mapC);
+                // mai am de adaugat guests
+                if (budgetString.contains("qwertyuioplkjhgfdsazxcvbnm")) // verificam daca budget e int
+                {
+                    //nu e bine
+                    Toast.makeText(AddNewEvent.this, "Incorrect budget value!\nDigits only!" , Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    databaseReference.child("id1").child("events").child(name).setValue(mapB);
+                    onBackPressed();
+                }
                 break;
         }
     }
