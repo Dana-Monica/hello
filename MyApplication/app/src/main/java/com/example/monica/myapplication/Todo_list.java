@@ -34,7 +34,7 @@ public class Todo_list extends AppCompatActivity
     DrawerLayout drawer;
     private DatabaseReference databaseReference;
     private EditText title,content;
-    private View hide1,hide2,hide3,hide4, hide5, show;
+    private View hide1,hide2,hide3,hide4, hide5,hide6,hide7,hide8, show;
     private ListView listview;
     private int numberOfItems = 0;
     private CustomAdapter customAdapter;
@@ -57,12 +57,18 @@ public class Todo_list extends AppCompatActivity
         hide3 = (View) findViewById(R.id.content_addnewchild);
         hide4 = (View) findViewById(R.id.content_updateeventitem);
         hide5 = (View) findViewById(R.id.content_addnewevent);
+        hide6 = (View) findViewById(R.id.content_guestsactivity);
+        hide7 = (View) findViewById(R.id.content_updateguestitem);
+        hide8 = (View) findViewById(R.id.content_addnewguest);
         show = (View) findViewById(R.id.content_todolist);
         hide1.setVisibility(View.GONE);
         hide2.setVisibility(View.GONE);
         hide3.setVisibility(View.GONE);
         hide4.setVisibility(View.GONE);
         hide5.setVisibility(View.GONE);
+        hide6.setVisibility(View.GONE);
+        hide7.setVisibility(View.GONE);
+        hide8.setVisibility(View.GONE);
         show.setVisibility(View.VISIBLE);
 
         listview = (ListView) findViewById(R.id.listview);

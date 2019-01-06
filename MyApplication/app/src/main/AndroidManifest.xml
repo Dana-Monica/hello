@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.monica.myapplication">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -38,6 +43,18 @@
         <activity
             android:name=".AddNewEvent"
             android:label="@string/title_activity_addnewevent"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GuestsActivity"
+            android:label="@string/title_activity_guestsactivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UpdateGuestItem"
+            android:label="@string/title_activity_updateguestitem"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddNewGuest"
+            android:label="@string/title_activity_addnewguest"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

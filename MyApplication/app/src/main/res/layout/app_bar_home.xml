@@ -34,7 +34,12 @@
         android:id="@+id/content_updateeventitem"/>
     <include layout="@layout/content_addnewevent"
         android:id="@+id/content_addnewevent"/>
-
+    <include layout="@layout/content_guestsactivity"
+        android:id="@+id/content_guestsactivity"/>
+    <include layout="@layout/content_updateguestitem"
+        android:id="@+id/content_updateguestitem"/>
+    <include layout="@layout/content_addnewguest"
+        android:id="@+id/content_addnewguest"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
