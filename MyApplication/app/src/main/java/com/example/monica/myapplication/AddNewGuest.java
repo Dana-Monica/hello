@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +38,7 @@ public class AddNewGuest extends AppCompatActivity
     private int numberOfElements = 0;
     private EditText phoneGuest, nameGuest;
     private String phoneGuestString, nameGuestString, name;
+    private LoginRemember user = LoginRemember.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +137,11 @@ public class AddNewGuest extends AppCompatActivity
         }
     }
 
+
+    public void setUser(String user){
+        this.user.setUser(user);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -190,7 +197,8 @@ public class AddNewGuest extends AppCompatActivity
             Intent i6 = new Intent(AddNewGuest.this,Todo_list.class);
             startActivity(i6);
         } else if (id == R.id.nav_sign_out) {
-
+            setUser("");
+            startActivity(new Intent(AddNewGuest.this,SignupActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -39,6 +39,7 @@ public class Todo_list extends AppCompatActivity
     private int numberOfItems = 0;
     private CustomAdapter customAdapter;
     private List<Lista> elements = new ArrayList<>();
+    private LoginRemember user = LoginRemember.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,7 @@ public class Todo_list extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent addNewChild = new Intent(Todo_list.this,AddNewChild.class);
+                addNewChild.putExtra("userr",user.getUser());
                 addNewChild.putExtra("numberOfElements",numberOfItems);
                 startActivity(addNewChild);
             }
@@ -123,6 +125,11 @@ public class Todo_list extends AppCompatActivity
     protected void onRestart() {
         super.onRestart();
         createNewDBListener();
+    }
+
+
+    public void setUser(String user){
+        this.user.setUser(user);
     }
 
     private void createNewDBListener() {
@@ -187,7 +194,8 @@ public class Todo_list extends AppCompatActivity
             Intent i4 = new Intent(Todo_list.this,Todo_list.class);
             startActivity(i4);
         } else if (id == R.id.nav_sign_out) {
-
+            setUser("");
+            startActivity(new Intent(Todo_list.this,SignupActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

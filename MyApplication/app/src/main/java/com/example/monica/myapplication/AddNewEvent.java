@@ -35,6 +35,7 @@ public class AddNewEvent extends AppCompatActivity
     private Intent intent;
     private int numberOfElements = 0;
     private EditText titleEventAdd, locationEventAdd, dateEventAdd, budgetEventAdd;
+    private LoginRemember user = LoginRemember.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +160,11 @@ public class AddNewEvent extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+
+    public void setUser(String user){
+        this.user.setUser(user);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -228,7 +234,8 @@ public class AddNewEvent extends AppCompatActivity
             Intent i6 = new Intent(AddNewEvent.this,Todo_list.class);
             startActivity(i6);
         } else if (id == R.id.nav_sign_out) {
-
+            setUser("");
+            startActivity(new Intent(AddNewEvent.this,SignupActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

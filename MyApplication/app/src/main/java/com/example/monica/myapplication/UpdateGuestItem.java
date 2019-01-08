@@ -36,6 +36,7 @@ public class UpdateGuestItem extends AppCompatActivity
     private Map<String,String> budget;
     private int position;
     private String nameGuestString, phoneGuestString,name;
+    private LoginRemember user = LoginRemember.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,11 @@ public class UpdateGuestItem extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+
+    public void setUser(String user){
+        this.user.setUser(user);
     }
 
     public void clicked4(View view) {
@@ -155,7 +161,8 @@ public class UpdateGuestItem extends AppCompatActivity
             Intent i6 = new Intent(UpdateGuestItem.this,Todo_list.class);
             startActivity(i6);
         } else if (id == R.id.nav_sign_out) {
-
+            setUser("");
+            startActivity(new Intent(UpdateGuestItem.this,SignupActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

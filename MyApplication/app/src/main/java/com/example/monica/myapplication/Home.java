@@ -1,5 +1,6 @@
 package com.example.monica.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,60 +46,67 @@ public class Home extends AppCompatActivity
     private static List<EventElement> elementsEvent = new ArrayList<>();
     private DatabaseReference databaseReference;
     private int numberOfItems = 0;
+    private Intent intent;
+    private LoginRemember user = LoginRemember.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        createDBListener();
-
-        hide1 = (View) findViewById(R.id.content_todolist);
-        hide2 = (View) findViewById(R.id.content_updatelistitem);
-        hide3 = (View) findViewById(R.id.content_addnewchild);
-        hide4 = (View) findViewById(R.id.content_updateeventitem);
-        hide5 = (View) findViewById(R.id.content_addnewevent);
-        hide6 = (View) findViewById(R.id.content_guestsactivity);
-        hide7 = (View) findViewById(R.id.content_updateguestitem);
-        hide8 = (View) findViewById(R.id.content_addnewguest);
-        show = (View) findViewById(R.id.content_home);
-        hide1.setVisibility(View.GONE);
-        hide2.setVisibility(View.GONE);
-        hide3.setVisibility(View.GONE);
-        hide4.setVisibility(View.GONE);
-        hide5.setVisibility(View.GONE);
-        hide6.setVisibility(View.GONE);
-        hide7.setVisibility(View.GONE);
-        hide8.setVisibility(View.GONE);
-        show.setVisibility(View.VISIBLE);
 
         listviewevent = (ListView) findViewById(R.id.listviewevent);
         customAdapter = new CustomAdaptorEvent(this, R.layout.event_item, elementsEvent);
         listviewevent.setAdapter(customAdapter);
         listviewevent.setOnItemClickListener(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent addNewEvent= new Intent(Home.this,AddNewEvent.class);
-                addNewEvent.putExtra("numberOfElements",numberOfItems);
-                startActivity(addNewEvent);
-            }
-        });
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            createDBListener();
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+            hide1 = (View) findViewById(R.id.content_todolist);
+            hide2 = (View) findViewById(R.id.content_updatelistitem);
+            hide3 = (View) findViewById(R.id.content_addnewchild);
+            hide4 = (View) findViewById(R.id.content_updateeventitem);
+            hide5 = (View) findViewById(R.id.content_addnewevent);
+            hide6 = (View) findViewById(R.id.content_guestsactivity);
+            hide7 = (View) findViewById(R.id.content_updateguestitem);
+            hide8 = (View) findViewById(R.id.content_addnewguest);
+            show = (View) findViewById(R.id.content_home);
+            hide1.setVisibility(View.GONE);
+            hide2.setVisibility(View.GONE);
+            hide3.setVisibility(View.GONE);
+            hide4.setVisibility(View.GONE);
+            hide5.setVisibility(View.GONE);
+            hide6.setVisibility(View.GONE);
+            hide7.setVisibility(View.GONE);
+            hide8.setVisibility(View.GONE);
+            show.setVisibility(View.VISIBLE);
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent addNewEvent = new Intent(Home.this, AddNewEvent.class);
+                    addNewEvent.putExtra("numberOfElements", numberOfItems);
+                    addNewEvent.putExtra("userr",user.getUser());
+                    startActivity(addNewEvent);
+                }
+            });
+
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+
+            navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+
+            intent = getIntent();
+            setUser(intent.getStringExtra("userr"));
     }
+
 
     @Override
     protected void onResume() {
@@ -108,6 +118,7 @@ public class Home extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         createDBListener();
+
     }
 
     @Override
@@ -115,6 +126,11 @@ public class Home extends AppCompatActivity
         super.onRestart();
         createDBListener();
     }
+
+    public void setUser(String user){
+        this.user.setUser(user);
+    }
+
 
     public void createDBListener() {
 
@@ -216,7 +232,8 @@ public class Home extends AppCompatActivity
             Intent i2 = new Intent(Home.this,Todo_list.class);
             startActivity(i2);
         } else if (id == R.id.nav_sign_out) {
-
+            setUser("");
+            startActivity(new Intent(Home.this,SignupActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

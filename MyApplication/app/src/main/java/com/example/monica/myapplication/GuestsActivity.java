@@ -46,6 +46,7 @@ public class GuestsActivity extends AppCompatActivity
     private Map<String,String> guestsMap = new HashMap<>();
     private List<User> guestList = new ArrayList<User>();
     private int numberOfItems = 0;
+    private LoginRemember user = LoginRemember.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +209,11 @@ public class GuestsActivity extends AppCompatActivity
         }
     }//onActivityResult
 
+
+    public void setUser(String user){
+        this.user.setUser(user);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -250,7 +256,8 @@ public class GuestsActivity extends AppCompatActivity
             Intent i2 = new Intent(GuestsActivity.this,Todo_list.class);
             startActivity(i2);
         } else if (id == R.id.nav_sign_out) {
-
+            setUser("");
+            startActivity(new Intent(GuestsActivity.this,SignupActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

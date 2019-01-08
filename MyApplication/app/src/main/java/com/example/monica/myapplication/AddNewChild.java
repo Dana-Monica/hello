@@ -32,6 +32,7 @@ public class AddNewChild extends AppCompatActivity
     private Intent intent;
     private int numberOfElements = 0;
     private EditText title,content;
+    private LoginRemember user = LoginRemember.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +114,8 @@ public class AddNewChild extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setUser(intent.getStringExtra("userr"));
     }
     @Override
     public void onBackPressed() {
@@ -122,6 +125,11 @@ public class AddNewChild extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+
+    public void setUser(String user){
+        this.user.setUser(user);
     }
 
     @Override
@@ -172,7 +180,8 @@ public class AddNewChild extends AppCompatActivity
             Intent i6 = new Intent(AddNewChild.this,Todo_list.class);
             startActivity(i6);
         } else if (id == R.id.nav_sign_out) {
-
+            setUser("");
+            startActivity(new Intent(AddNewChild.this,SignupActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

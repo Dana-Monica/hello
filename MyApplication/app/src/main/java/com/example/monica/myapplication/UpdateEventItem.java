@@ -36,6 +36,7 @@ public class UpdateEventItem extends AppCompatActivity
     private Map<String,String> budget;
     private int position;
     private String name, budgetTot;
+    private LoginRemember user = LoginRemember.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,10 @@ public class UpdateEventItem extends AppCompatActivity
         }
     }
 
+    public void setUser(String user){
+        this.user.setUser(user);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -148,7 +153,8 @@ public class UpdateEventItem extends AppCompatActivity
             Intent i6 = new Intent(UpdateEventItem.this,Todo_list.class);
             startActivity(i6);
         } else if (id == R.id.nav_sign_out) {
-
+            setUser("");
+            startActivity(new Intent(UpdateEventItem.this,SignupActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

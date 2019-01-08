@@ -32,6 +32,7 @@ public class UpdateListItem extends AppCompatActivity
     private EditText title,content;
     private int position;
     private String name;
+    private LoginRemember user = LoginRemember.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,11 @@ public class UpdateListItem extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+
+    public void setUser(String user){
+        this.user.setUser(user);
     }
 
     public void clicked(View view) {
@@ -139,7 +145,8 @@ public class UpdateListItem extends AppCompatActivity
             Intent i6 = new Intent(UpdateListItem.this,Todo_list.class);
             startActivity(i6);
         } else if (id == R.id.nav_sign_out) {
-
+            setUser("");
+            startActivity(new Intent(UpdateListItem.this,SignupActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
